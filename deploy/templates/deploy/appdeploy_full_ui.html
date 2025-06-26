@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AppDeploy Premium – Enterprise iOS App Distribution</title>
+  <link rel="icon" href="appdeploy-logo.png" type="image/png">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #f4f4f4;
+      text-align: center;
+    }
+    .container {
+      padding: 50px 25px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .logo {
+      width: 90px;
+      margin-bottom: 25px;
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+    p.subtitle {
+      font-size: 1.2rem;
+      color: #cccccc;
+      margin-bottom: 35px;
+    }
+    .premium-box {
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+      margin-top: 30px;
+      text-align: left;
+    }
+    .install-button {
+      background-color: #007aff;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    .install-button:hover {
+      background-color: #005ecb;
+    }
+    .stats {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #444;
+    }
+    h2 {
+      color: #00bcd4;
+      margin-top: 40px;
+    }
+    ul, ol {
+      padding-left: 20px;
+      margin: 0;
+    }
+  
+    a {
+      color: #00eaff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 60px;
+      padding: 20px;
+      background: #1a1a1a;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+    @media screen and (max-width: 600px) {
+      h1 { font-size: 1.5rem; }
+      .install-button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="appdeploy-logo.png" alt="AppDeploy Logo" class="logo">
+    <h1>AppDeploy Premium</h1>
+    <p class="subtitle">A premium-grade iOS app deployment tool for enterprises and regulated teams.</p>
+
+    <a href="#" class="install-button" id="installButton">Install MyApp</a>
+    <div class="stats">
+      Total Installs: <strong id="totalInstalls">–</strong><br>
+      Installs Remaining: <strong id="remainingInstalls">–</strong>
+    </div>
+
+    <div class="premium-box">
+      <h2>What is AppDeploy Premium?</h2>
+      <p>AppDeploy Premium gives large teams, agencies, and secure environments the ability to distribute internal iOS apps with elevated privacy, custom onboarding, and extended support — all without MDM or the Apple Enterprise Developer Program.</p>
+    </div>
+
+    <div class="premium-box">
+      <h2>Enterprise Features</h2>
+      <ul>
+        <li>🔐 End-to-end encrypted ABM's redemption processing</li>
+        <li>🚫 Links hidden from users, with auto-expiry & usage control</li>
+        <li>📊 Real-time usage analytics and device tracking</li>
+        <li>🎨 White-label support: logo, URL, and custom branding</li>
+        <li>🔄 Scalable to thousands of devices across departments</li>
+      </ul>
+    </div>
+
+    <div class="premium-box">
+      <h2>Use Cases</h2>
+      <ul>
+        <li>Enterprise-level internal deployments</li>
+        <li>Government or health sector app rollout</li>
+        <li>High-privacy business apps</li>
+      </ul>
+    </div>
+
+    <div class="premium-box">
+      <h2>Contact for Enterprise Access</h2>
+      <p>We offer tailored pricing, SLA-backed uptime, and full onboarding support.</p>
+      <p><strong>Email:</strong> <a href="mailto:support@scotitech.com">enterprise@scotitech.com</a></p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 AppDeploy Premium by ScotiTech Solutions Ltd. All rights reserved.
+  </footer>
+  <script>
+    function updateStats() {
+  fetch('/get-stats/')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('totalInstalls').innerText = data.total_installs;
+      document.getElementById('remainingInstalls').innerText = data.installs_remaining;
+    })
+    .catch(() => console.warn("Could not update stats."));
+}
+
+document.getElementById('installButton').addEventListener('click', function(e) {
+  e.preventDefault();
+
+  fetch('/get-download-link/')
+    .then(res => res.json())
+    .then(data => {
+      if (data.download_link) {
+        window.open(data.download_link, '_blank');
+        updateStats();  // update stats after successful fetch
+      } else {
+        alert("No links available right now.");
+      }
+    })
+    .catch(() => alert("Error fetching download link."));
+});
+
+// Initial load
+updateStats();
+
+  </script>
+</body>
+</html>
